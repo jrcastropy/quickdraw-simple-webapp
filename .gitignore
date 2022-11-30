@@ -1,0 +1,7 @@
+venv/
+*.png
+*.pickle
+*.pth
+assets/
+*__pycache__/*
+analysis/
