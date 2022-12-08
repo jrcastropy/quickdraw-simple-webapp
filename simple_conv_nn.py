@@ -24,10 +24,11 @@ class SimpleCNN(nn.Module):
 
         #Input channels = 3, output channels = 18
         self.conv1 = nn.Conv2d(1, 18, kernel_size=3, stride=1, padding=1)
+        self.conv2 = nn.Conv2d(18, 10, kernel_size=3, stride=1, padding=1)
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
 
         #3528 input features, 64 output features (see sizing flow below)
-        self.fc1 = nn.Linear(18 * 14 * 14, hidden_size)
+        self.fc1 = nn.Linear(10 * 14 * 14, hidden_size)
 
         #64 input features, 10 output features for our 10 defined classes
         self.fc2 = nn.Linear(hidden_size, output_size)
@@ -43,13 +44,15 @@ class SimpleCNN(nn.Module):
         #Size changes from (3, 32, 32) to (18, 32, 32)
         x = F.relu(self.conv1(x))
 
+        x = F.relu(self.conv2(x))
+
         #Size changes from (18, 32, 32) to (18, 16, 16)
         x = self.pool(x)
 
         #Reshape data to input to the input layer of the neural net
         #Size changes from (18, 16, 16) to (1, 4608)
         #Recall that the -1 infers this dimension from the other given dimension
-        x = x.view(-1, 18 * 14 * 14)
+        x = x.view(-1, 10 * 14 * 14)
 
         #Computes the activation of the first fully connected layer
         #Size changes from (1, 4608) to (1, 64)

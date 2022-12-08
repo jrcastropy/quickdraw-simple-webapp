@@ -47,6 +47,7 @@ import torch.nn.functional as F
 from torchvision import datasets, transforms
 
 from simple_conv_nn import SimpleCNN
+import cv2
 
 
 
@@ -61,7 +62,7 @@ categories = [
             'airplane', 'axe', 'banana', 'basketball', 'cake', 'donut', 'flower', 'guitar', 'house', 'rainbow'
             ]
 
-def load_model(architecture='conv', filepath = '/root/quick-draw-image-recognition/checkpoint.pth'):
+def load_model(architecture='conv', filepath = '/root/quick-draw-image-recognition/checkpoint2.pth'):
     """
     Function loads the model from checkpoint.
 
@@ -156,7 +157,7 @@ def view_classify(img, preds):
     plt.tight_layout()
 
     ts = time.time()
-    plt.savefig('prediction' + str(ts) + '.png')
+    # plt.savefig('prediction' + str(ts) + '.png')
 
 app = Flask(__name__)
 
@@ -189,7 +190,7 @@ def pred(dataURL):
     image_data = BytesIO(byte_data)
     # open Image with PIL
     img = Image.open(image_data)
-
+    # img.save('test2.jpg')
     # save original image as png (for debugging)
     ts = time.time()
     #img.save('image' + str(ts) + '.png', 'PNG')
@@ -200,16 +201,20 @@ def pred(dataURL):
     # preprocess the image for the model
     image_cropped = crop_image(img) # crop the image and resize to 28x28
     image_normalized = normalize_image(image_cropped) # normalize color after crop
-
+    
     # convert image from RGBA to RGB
     img_rgb = convert_to_rgb(image_normalized)
-
+    # img_rgb.save('test2.jpg')
+    pix = np.array(img_rgb)
+    print(np.invert(pix))
+    cv2.imwrite('test3.jpg', np.invert(pix))
     # convert image to numpy
     image_np = convert_to_np(img_rgb)
-
+    # cv2.imwrite('test.jpg', image_np)
     # apply model and print prediction
     label, label_num, preds = get_prediction(model, image_np)
     print("This is a {}".format(label_num))
+    print(label, preds)
 
     # save classification results as a diagram
     view_classify(image_np, preds)
@@ -251,7 +256,7 @@ def pred(dataURL):
     )
 
 def main():
-    app.run(host='0.0.0.0', port=3001, debug=True)
+    app.run(host='0.0.0.0', port=3002, debug=True)
 
 
 if __name__ == '__main__':

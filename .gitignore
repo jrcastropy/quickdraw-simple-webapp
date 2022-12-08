@@ -3,5 +3,7 @@ venv/
 *.pickle
 *.pth
 assets/
-*__pycache__/*
+*/__pycache__/*
 analysis/
+__pycache__/
+drawn_images/

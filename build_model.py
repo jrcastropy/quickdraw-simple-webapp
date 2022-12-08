@@ -673,6 +673,9 @@ def main():
     parser.add_argument('--save_dir', action='store', default = ' ',
                         help='Directory to save model checkpoint')
 
+    parser.add_argument('--filename', action='store', default = 'checkpoint',
+                        help='filename of the model checkpoint')
+
     parser.add_argument('--learning_rate', type = float, action='store', default = 0.003,
                         help='Model hyperparameters: learning rate')
 
@@ -716,10 +719,12 @@ def main():
     else:
         device = 'cpu'
 
-    if (results.save_dir == ' '):
+    if results.filename != 'checkpoint':
+        save_path = f'{results.filename}.pth'
+    elif (results.save_dir == ' '):
         save_path = 'checkpoint.pth'
     else:
-        save_path = results.save_dir + '/' + 'checkpoint.pth'
+        save_path = results.save_dir + '/' + f'{results.filename}.pth'
 
     # Load data
     X_train, y_train, X_test, y_test = load_data()

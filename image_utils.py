@@ -459,6 +459,6 @@ def convert_to_rgb(image):
         image_rgb - PIL image converted to RGB
     """
     image_rgb = alpha_composite_with_color(image)
-    image_rgb.convert('RGB')
+    image_rgb = image_rgb.convert('RGB')
 
     return image_rgb
