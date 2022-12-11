@@ -53,16 +53,16 @@
 </script>
 
 <script>
-  let text = "{{result}}"
+  let text = "{{ result|join(', ')}}"
   let letter = text.charAt(0);
   const vowels = ['a', 'e', 'i', 'o', 'u'];
   let reshead;
 
   if (vowels.includes(letter)) {
-    reshead = 'Is this an {{result}}'
+    reshead = `Is this either an ${text}`
   }
   else {
-    reshead = 'Is this a {{result}}'
+    reshead = `Is this either a ${text}`
   }
   var x = document.getElementById("result-heading");
   x.textContent=reshead;
